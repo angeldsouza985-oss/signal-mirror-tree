@@ -94,6 +94,10 @@ Output looks like:
 
 ---
 
+## Flow Diagram
+
+![Flow Diagram](flow-diagram.png)
+
 ## Why This Is Reliable
 
 * same answers → same result
