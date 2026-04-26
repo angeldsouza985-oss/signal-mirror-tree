@@ -1,0 +1,281 @@
+# Test Cases — Signal Mirror Tree
+
+## 1. Objective
+
+The purpose of these test cases is to validate:
+
+* deterministic behavior of the system
+* correctness of node transitions
+* accuracy of signal accumulation
+* consistency of final summary output
+
+Each test case simulates a full traversal path through the tree.
+
+---
+
+## 2. Testing Approach
+
+Each case includes:
+
+* **Input Path** → sequence of selected options
+* **Expected Signals** → accumulated state
+* **Expected Outcome** → final summary classification
+
+All tests assume:
+
+* valid inputs only (closed option system)
+* no skipped nodes
+* deterministic routing
+
+---
+
+## 3. Test Case 1 — High Agency, High Contribution, Other-Oriented
+
+### Scenario
+
+User demonstrates strong ownership, proactive behavior, and team awareness.
+
+### Input Path
+
+```text
+S1_OPEN → Sharp
+S1_HIGH → My choices
+S1_INT → Adapted fast
+
+S2_OPEN → Helping someone
+S2_HIGH → It felt right
+S2_DEEP1 → Someone improved
+
+S3_OPEN → My team
+S3_OTHER → Team success
+S3_OTHER_DEEP1 → Shared goals
+```
+
+### Expected Signals
+
+```text
+control.internal = 2+
+reaction.active = 1+
+
+value.contribution = 2+
+
+impact.other = 2+
+```
+
+### Expected Summary
+
+```text
+Control → internal  
+Value → contribution  
+Impact → other
+```
+
+---
+
+## 4. Test Case 2 — External Locus, Entitlement, Self-Centric
+
+### Scenario
+
+User perceives lack of control, focuses on unmet expectations, and remains self-focused.
+
+### Input Path
+
+```text
+S1_OPEN → Heavy
+S1_LOW → Waiting on others
+S1_EXT → Waited
+
+S2_OPEN → Feeling ignored
+S2_LOW → Lack of recognition
+S2_DEEP3 → Praise
+
+S3_OPEN → Myself
+S3_SELF → My stress
+S3_SELF_DEEP2 → Pressure
+```
+
+### Expected Signals
+
+```text
+control.external = 2+
+reaction.passive = 1+
+
+value.entitlement = 2+
+
+impact.self = 2+
+```
+
+### Expected Summary
+
+```text
+Control → external  
+Value → entitlement  
+Impact → self
+```
+
+---
+
+## 5. Test Case 3 — Mixed Control, Contribution-Oriented, Balanced Impact
+
+### Scenario
+
+User shows partial agency, contributes meaningfully, and balances self with team awareness.
+
+### Input Path
+
+```text
+S1_OPEN → Uneven
+S1_HIGH → Quick adjustments
+S1_MIX → Team effort
+
+S2_OPEN → Improving something
+S2_HIGH → I saw a gap
+S2_DEEP2 → Improved clarity
+
+S3_OPEN → A colleague
+S3_OTHER → Someone struggling
+S3_OTHER_DEEP2 → Empathy
+```
+
+### Expected Signals
+
+```text
+control.internal = 1+
+control.external = 0–1
+
+value.contribution = 2+
+
+impact.other = 2+
+```
+
+### Expected Summary
+
+```text
+Control → internal (dominant)  
+Value → contribution  
+Impact → other
+```
+
+---
+
+## 6. Test Case 4 — Low Energy, Passive Response, Entitlement Drift
+
+### Scenario
+
+User shows withdrawal behavior, low energy, and expectation-driven thinking.
+
+### Input Path
+
+```text
+S1_OPEN → Blocked
+S1_LOW → Low energy
+S1_PASS → Drained
+
+S2_OPEN → Just doing my role
+S2_LOW → Too much expectation
+S2_DEEP4 → Uneven workload
+
+S3_OPEN → Myself
+S3_SELF → My time
+S3_SELF_DEEP2 → Workload
+```
+
+### Expected Signals
+
+```text
+control.external = 2+
+energy.withdrawn = 1+
+
+value.entitlement = 2+
+
+impact.self = 2+
+```
+
+### Expected Summary
+
+```text
+Control → external  
+Value → entitlement  
+Impact → self
+```
+
+---
+
+## 7. Test Case 5 — Strong Internal Control but Narrow Impact
+
+### Scenario
+
+User is highly proactive but remains self-focused.
+
+### Input Path
+
+```text
+S1_OPEN → Sharp
+S1_HIGH → My choices
+S1_INT → Took initiative
+
+S2_OPEN → Improving something
+S2_HIGH → I enjoy solving problems
+S2_DEEP1 → Work got better
+
+S3_OPEN → Myself
+S3_SELF → My results
+S3_SELF_DEEP1 → Achievement
+```
+
+### Expected Signals
+
+```text
+control.internal = 2+
+
+value.contribution = 2+
+
+impact.self = 2+
+```
+
+### Expected Summary
+
+```text
+Control → internal  
+Value → contribution  
+Impact → self
+```
+
+---
+
+## 8. Determinism Validation
+
+Across all test cases:
+
+* identical input sequences produce identical outputs
+* no variation in routing or summary
+* no dependency on external factors
+
+### Assertion:
+
+> The system is fully deterministic and reproducible.
+
+---
+
+## 9. Edge Case Considerations
+
+Although constrained by design, the following were validated:
+
+| Case                | Handling                           |
+| ------------------- | ---------------------------------- |
+| Invalid input       | Not possible (closed options)      |
+| Missing input       | Not possible (mandatory selection) |
+| Ambiguous intent    | Eliminated via fixed choices       |
+| Conflicting signals | Resolved via dominance (frequency) |
+
+---
+
+## 10. Conclusion
+
+These test cases confirm that the Signal Mirror Tree:
+
+* behaves deterministically
+* correctly accumulates and interprets signals
+* produces consistent and explainable outputs
+
+The system is therefore reliable for structured reflection without ambiguity or hallucination.
