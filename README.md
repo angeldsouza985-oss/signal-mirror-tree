@@ -4,8 +4,7 @@ Deterministic reflection decision tree system
 
 ## Overview
 
-The system is a **rule-based decision tree** that guides a user through reflection step by step.
-
+This project is a rule-based system that helps users reflect on their day using fixed choices
 At each step:
 
 * the user selects one option
