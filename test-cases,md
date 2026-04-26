@@ -18,8 +18,8 @@ Each test case simulates a full traversal path through the tree.
 Each case includes:
 
 * **Input Path** → sequence of selected options
-* **Expected Signals** → accumulated state
-* **Expected Outcome** → final summary classification
+* **Expected Signals** → exact accumulated state
+* **Expected Output** → final summary classification
 
 All tests assume:
 
@@ -27,17 +27,19 @@ All tests assume:
 * no skipped nodes
 * deterministic routing
 
+Each test case is **manually traceable through node transitions**, ensuring verification without execution.
+
 ---
 
-## 3. Test Case 1 — High Agency, High Contribution, Other-Oriented
+## 3. Test Case 1 — High Agency, Contribution-Oriented, Other-Focused
 
 ### Scenario
 
-User demonstrates strong ownership, proactive behavior, and team awareness.
+User demonstrates ownership, proactive behavior, and strong team awareness.
 
 ### Input Path
 
-```text
+```text id="tc1a"
 S1_OPEN → Sharp
 S1_HIGH → My choices
 S1_INT → Adapted fast
@@ -53,18 +55,18 @@ S3_OTHER_DEEP1 → Shared goals
 
 ### Expected Signals
 
-```text
-control.internal = 2+
-reaction.active = 1+
+```text id="tc1b"
+control.internal = 2
+reaction.active = 1
 
-value.contribution = 2+
+value.contribution = 2
 
-impact.other = 2+
+impact.other = 2
 ```
 
-### Expected Summary
+### Expected Output
 
-```text
+```text id="tc1c"
 Control → internal  
 Value → contribution  
 Impact → other
@@ -72,15 +74,15 @@ Impact → other
 
 ---
 
-## 4. Test Case 2 — External Locus, Entitlement, Self-Centric
+## 4. Test Case 2 — External, Entitlement-Oriented, Self-Focused
 
 ### Scenario
 
-User perceives lack of control, focuses on unmet expectations, and remains self-focused.
+User feels lack of control, focuses on unmet expectations, and remains self-centered.
 
 ### Input Path
 
-```text
+```text id="tc2a"
 S1_OPEN → Heavy
 S1_LOW → Waiting on others
 S1_EXT → Waited
@@ -96,18 +98,18 @@ S3_SELF_DEEP2 → Pressure
 
 ### Expected Signals
 
-```text
-control.external = 2+
-reaction.passive = 1+
+```text id="tc2b"
+control.external = 2
+reaction.passive = 1
 
-value.entitlement = 2+
+value.entitlement = 2
 
-impact.self = 2+
+impact.self = 2
 ```
 
-### Expected Summary
+### Expected Output
 
-```text
+```text id="tc2c"
 Control → external  
 Value → entitlement  
 Impact → self
@@ -115,15 +117,15 @@ Impact → self
 
 ---
 
-## 5. Test Case 3 — Mixed Control, Contribution-Oriented, Balanced Impact
+## 5. Test Case 3 — Internal, Contribution-Oriented, Other-Focused
 
 ### Scenario
 
-User shows partial agency, contributes meaningfully, and balances self with team awareness.
+User shows moderate agency, contributes meaningfully, and considers others.
 
 ### Input Path
 
-```text
+```text id="tc3a"
 S1_OPEN → Uneven
 S1_HIGH → Quick adjustments
 S1_MIX → Team effort
@@ -139,34 +141,33 @@ S3_OTHER_DEEP2 → Empathy
 
 ### Expected Signals
 
-```text
-control.internal = 1+
-control.external = 0–1
+```text id="tc3b"
+control.internal = 1
 
-value.contribution = 2+
+value.contribution = 2
 
-impact.other = 2+
+impact.other = 2
 ```
 
-### Expected Summary
+### Expected Output
 
-```text
-Control → internal (dominant)  
+```text id="tc3c"
+Control → internal  
 Value → contribution  
 Impact → other
 ```
 
 ---
 
-## 6. Test Case 4 — Low Energy, Passive Response, Entitlement Drift
+## 6. Test Case 4 — External, Entitlement-Oriented, Low Energy
 
 ### Scenario
 
-User shows withdrawal behavior, low energy, and expectation-driven thinking.
+User shows low energy, passive response, and expectation-driven thinking.
 
 ### Input Path
 
-```text
+```text id="tc4a"
 S1_OPEN → Blocked
 S1_LOW → Low energy
 S1_PASS → Drained
@@ -182,18 +183,18 @@ S3_SELF_DEEP2 → Workload
 
 ### Expected Signals
 
-```text
-control.external = 2+
-energy.withdrawn = 1+
+```text id="tc4b"
+control.external = 2
+energy.withdrawn = 1
 
-value.entitlement = 2+
+value.entitlement = 2
 
-impact.self = 2+
+impact.self = 2
 ```
 
-### Expected Summary
+### Expected Output
 
-```text
+```text id="tc4c"
 Control → external  
 Value → entitlement  
 Impact → self
@@ -201,15 +202,15 @@ Impact → self
 
 ---
 
-## 7. Test Case 5 — Strong Internal Control but Narrow Impact
+## 7. Test Case 5 — Internal, Contribution-Oriented, Self-Focused
 
 ### Scenario
 
-User is highly proactive but remains self-focused.
+User is proactive and productive but remains self-focused.
 
 ### Input Path
 
-```text
+```text id="tc5a"
 S1_OPEN → Sharp
 S1_HIGH → My choices
 S1_INT → Took initiative
@@ -225,17 +226,17 @@ S3_SELF_DEEP1 → Achievement
 
 ### Expected Signals
 
-```text
-control.internal = 2+
+```text id="tc5b"
+control.internal = 2
 
-value.contribution = 2+
+value.contribution = 2
 
-impact.self = 2+
+impact.self = 2
 ```
 
-### Expected Summary
+### Expected Output
 
-```text
+```text id="tc5c"
 Control → internal  
 Value → contribution  
 Impact → self
@@ -243,7 +244,49 @@ Impact → self
 
 ---
 
-## 8. Determinism Validation
+## 8. Test Case 6 — Conflicting Signals (Edge Case)
+
+### Scenario
+
+User shows strong control but entitlement mindset, while still considering others.
+
+### Input Path
+
+```text id="tc6a"
+S1_OPEN → Sharp
+S1_HIGH → My choices
+S1_INT → Adapted fast
+
+S2_OPEN → Feeling ignored
+S2_LOW → Lack of recognition
+S2_DEEP3 → Praise
+
+S3_OPEN → My team
+S3_OTHER → Team success
+S3_OTHER_DEEP1 → Shared goals
+```
+
+### Expected Signals
+
+```text id="tc6b"
+control.internal = 2
+
+value.entitlement = 2
+
+impact.other = 2
+```
+
+### Expected Output
+
+```text id="tc6c"
+Control → internal  
+Value → entitlement  
+Impact → other
+```
+
+---
+
+## 9. Determinism Validation
 
 Across all test cases:
 
@@ -257,25 +300,24 @@ Across all test cases:
 
 ---
 
-## 9. Edge Case Considerations
-
-Although constrained by design, the following were validated:
+## 10. Edge Case Handling
 
 | Case                | Handling                           |
 | ------------------- | ---------------------------------- |
 | Invalid input       | Not possible (closed options)      |
 | Missing input       | Not possible (mandatory selection) |
-| Ambiguous intent    | Eliminated via fixed choices       |
-| Conflicting signals | Resolved via dominance (frequency) |
+| Ambiguous input     | Eliminated via fixed choices       |
+| Conflicting signals | Resolved via dominant frequency    |
 
 ---
 
-## 10. Conclusion
+## 11. Conclusion
 
 These test cases confirm that the Signal Mirror Tree:
 
 * behaves deterministically
-* correctly accumulates and interprets signals
+* correctly accumulates signals
 * produces consistent and explainable outputs
 
 The system is therefore reliable for structured reflection without ambiguity or hallucination.
+
