@@ -1,0 +1,114 @@
+id	parentId	type	text	options	target	signal
+
+START	null	start	Welcome. This is your Signal Mirror — a reflection of how you moved through today.			
+
+S1_OPEN	START	question	Pick the word that best captures your day:	Sharp|Heavy|Uneven|Blocked		
+
+S1_ROUTE	S1_OPEN	decision		answer=Sharp|Uneven:S1_HIGH;answer=Heavy|Blocked:S1_LOW		
+
+S1_HIGH	S1_ROUTE	question	What drove things forward?	My choices|Quick adjustments|Support around me|Momentum		
+
+S1_LOW	S1_ROUTE	question	What slowed things down?	Unclear direction|Waiting on others|Low energy|Too many obstacles		
+
+S1_D2	S1_HIGH	decision		answer=My choices|Quick adjustments:S1_INT;answer=Support around me|Momentum:S1_MIX		
+
+S1_D2B	S1_LOW	decision		answer=Unclear direction|Waiting on others:S1_EXT;answer=Low energy|Too many obstacles:S1_PASS		
+
+S1_INT	S1_D2	question	When things shifted, how did you respond?	Adapted fast|Took initiative|Stayed consistent|Led others		control:internal;reaction:active
+
+S1_MIX	S1_D2	question	What influenced your progress most?	My effort|Team effort|Timing|External support		control:internal
+
+S1_EXT	S1_D2B	question	What was your first reaction?	Waited|Looked for help|Felt stuck|Blamed situation		control:external;reaction:passive
+
+S1_PASS	S1_D2B	question	How did your energy feel?	Low|Drained|Unmotivated|Distracted		control:external;energy:withdrawn
+
+S1_REF_INT	S1_INT	reflection	You actively shaped your day. Even small actions reinforced your sense of control.			control:internal
+
+S1_REF_MIX	S1_MIX	reflection	Your progress was shared between you and external factors. Not everything was in your hands — but some of it was.			
+
+S1_REF_EXT	S1_EXT	reflection	The day felt driven by outside forces. Even then, there were moments where choice was still available.			control:external
+
+S1_REF_PASS	S1_PASS	reflection	Your energy pulled inward today. Recognizing that is the first step toward regaining direction.			
+
+BRIDGE_1A	S1_REF_INT	bridge	Now let’s reflect on what value you created today.		S2_OPEN	
+
+BRIDGE_1B	S1_REF_MIX	bridge	Let’s shift from control to contribution — what did you give today?		S2_OPEN	
+
+BRIDGE_1C	S1_REF_EXT	bridge	Let’s move from what happened — to what you contributed.		S2_OPEN	
+
+BRIDGE_1D	S1_REF_PASS	bridge	Now let’s explore where your effort went today.		S2_OPEN	
+
+# -------- VALUE SIGNAL --------
+
+S2_OPEN	null	question	Which moment stands out most?	Helping someone|Improving something|Feeling ignored|Just doing my role		
+
+S2_ROUTE	S2_OPEN	decision		answer=Helping someone|Improving something:S2_HIGH;answer=Feeling ignored|Just doing my role:S2_LOW		
+
+S2_HIGH	S2_ROUTE	question	Why did you step beyond your role?	It felt right|Team needed it|I saw a gap|I enjoy solving problems		value:contribution
+
+S2_LOW	S2_ROUTE	question	What stayed with you most?	Lack of recognition|Others not contributing|Too much expectation|No appreciation		value:entitlement
+
+S2_D2	S2_HIGH	decision		answer=It felt right|I enjoy solving problems:S2_DEEP1;answer=Team needed it|I saw a gap:S2_DEEP2		
+
+S2_D2B	S2_LOW	decision		answer=Lack of recognition|No appreciation:S2_DEEP3;answer=Others not contributing|Too much expectation:S2_DEEP4		
+
+S2_DEEP1	S2_D2	question	What was the outcome of your effort?	Someone improved|Work got better|Stress reduced|Things moved faster		value:contribution
+
+S2_DEEP2	S2_D2	question	How did your action help the situation?	Filled a gap|Supported team|Prevented delay|Improved clarity		value:contribution
+
+S2_DEEP3	S2_D2B	question	What did you expect in return?	Praise|Recognition|Acknowledgment|Validation		value:entitlement
+
+S2_DEEP4	S2_D2B	question	What frustrated you most?	Uneven workload|Lack of effort|Unfair expectations|No accountability		value:entitlement
+
+S2_REF_CON	S2_DEEP1	reflection	You contributed beyond obligation. That creates long-term impact, even if unnoticed today.			value:contribution
+
+S2_REF_CON2	S2_DEEP2	reflection	You stepped in where needed. That’s how systems improve quietly.			value:contribution
+
+S2_REF_ENT	S2_DEEP3	reflection	Your focus stayed on what you should receive. That’s valid — but it can limit growth if it dominates.			value:entitlement
+
+S2_REF_ENT2	S2_DEEP4	reflection	You noticed imbalance around you. The challenge is choosing how to respond to it.			value:entitlement
+
+BRIDGE_2A	S2_REF_CON	bridge	Now let’s expand outward — beyond your own experience.		S3_OPEN	
+
+BRIDGE_2B	S2_REF_CON2	bridge	Let’s look at the wider impact of your actions.		S3_OPEN	
+
+BRIDGE_2C	S2_REF_ENT	bridge	Let’s shift perspective — who else was affected today?		S3_OPEN	
+
+BRIDGE_2D	S2_REF_ENT2	bridge	Now step outside your own view — what about others?		S3_OPEN	
+
+# -------- IMPACT SIGNAL --------
+
+S3_OPEN	null	question	Who occupied your thoughts most today?	Myself|My team|A colleague|End user		
+
+S3_D1	S3_OPEN	decision		answer=Myself:S3_SELF;answer=My team|A colleague|End user:S3_OTHER		
+
+S3_SELF	S3_D1	question	When challenges came up, what mattered most?	My results|My stress|My goals|My time		impact:self
+
+S3_OTHER	S3_D1	question	Who were you most aware of?	Team success|Someone struggling|Shared outcome|User experience		impact:other
+
+S3_D2	S3_SELF	decision		answer=My results|My goals:S3_SELF_DEEP1;answer=My stress|My time:S3_SELF_DEEP2		
+
+S3_D2B	S3_OTHER	decision		answer=Team success|Shared outcome:S3_OTHER_DEEP1;answer=Someone struggling|User experience:S3_OTHER_DEEP2		
+
+S3_SELF_DEEP1	S3_D2	question	What drove your focus?	Achievement|Deadlines|Responsibility|Performance		impact:self
+
+S3_SELF_DEEP2	S3_D2	question	What shaped your experience most?	Pressure|Fatigue|Time limits|Workload		impact:self
+
+S3_OTHER_DEEP1	S3_D2B	question	What mattered in the bigger picture?	Team delivery|Shared goals|Collective success|Coordination		impact:other
+
+S3_OTHER_DEEP2	S3_D2B	question	What stood out most?	Helping someone|Understanding needs|User outcome|Empathy		impact:other
+
+S3_REF_SELF	S3_SELF_DEEP1	reflection	Your focus stayed centered on your own outcomes. Expanding outward could reduce pressure and increase meaning.			impact:self
+
+S3_REF_SELF2	S3_SELF_DEEP2	reflection	Your experience was shaped by internal pressure. Broadening perspective may ease that weight.			impact:self
+
+S3_REF_OTHER	S3_OTHER_DEEP1	reflection	You aligned with something bigger than yourself. That builds connection and shared success.			impact:other
+
+S3_REF_OTHER2	S3_OTHER_DEEP2	reflection	You noticed others deeply. That awareness creates meaningful impact beyond tasks.			impact:other
+
+# -------- SUMMARY --------
+
+SUMMARY	S3_REF_OTHER	summary	Your signals today: Control → {axis1.dominant}, Value → {axis2.dominant}, Impact → {axis3.dominant}.  
+You shaped, contributed, and connected in ways that define your day.			
+
+END	SUMMARY	end	Session complete. Reflect again tomorrow.			
